@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <meta name="theme-color" content="#087A45">
+  <meta name="application-name" content="GAIA">
+  <meta name="apple-mobile-web-app-title" content="GAIA">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>GAIA</title>
+
+  <link rel="manifest" href="./manifest.webmanifest">
+
+  <link rel="icon"
+        type="image/png"
+        sizes="192x192"
+        href="./gaia-192.png">
+
+  <link rel="icon"
+        type="image/png"
+        sizes="512x512"
+        href="./gaia-512.png">
+
+  <link rel="apple-touch-icon"
+        sizes="180x180"
+        href="./gaia-180.png">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      transition: opacity .35s ease, visibility .35s ease;
+    }
+
+    #splash.oculto {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-conteudo {
+      width: min(82vw, 400px);
+      text-align: center;
+    }
+
+    .splash-logo {
+      display: block;
+      width: min(64vw, 290px);
+      height: auto;
+      margin: 0 auto 14px;
+      object-fit: contain;
+    }
+
+    .splash-nome {
+      margin-bottom: 22px;
+      color: #087A45;
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: .09em;
+    }
+
+    .barra {
+      width: 170px;
+      height: 6px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #DDECE4;
+    }
+
+    .barra::after {
+      content: "";
+      display: block;
+      width: 42%;
+      height: 100%;
+      border-radius: 999px;
+      background: #087A45;
+      animation: carregando 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes carregando {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(235%);
+      }
+    }
+
+    #gaia {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="splash">
+    <div class="splash-conteudo">
+
+      <img
+        class="splash-logo"
+        src="./gaia-512.png"
+        alt="GAIA">
+
+      <div class="splash-nome">
+        GAIA
+      </div>
+
+      <div class="barra"></div>
+
+    </div>
+  </div>
+
+  <iframe
+    id="gaia"
+    src="https://script.google.com/macros/s/AKfycbyFWTTRCaZHN3oPfwa38JRINUh-tLiHjF6PUAZQmsfEuDTE3Jn1qVG89RmnURpMpBni/exec"
+    title="GAIA — Gestão de Planilhas de Controle"
+    allow="fullscreen">
+  </iframe>
+
+  <script>
+    const frame = document.getElementById('gaia');
+    const splash = document.getElementById('splash');
+
+    frame.addEventListener('load', function () {
+      setTimeout(function () {
+        splash.classList.add('oculto');
+      }, 500);
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker
+          .register('./sw.js')
+          .catch(function (erro) {
+            console.log('Service Worker:', erro);
+          });
+      });
+    }
+  </script>
+
+</body>
+</html>
